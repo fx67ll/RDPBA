@@ -1,0 +1,1 @@
+(self.webpackChunkreact_fx67ll_com=self.webpackChunkreact_fx67ll_com||[]).push([[808],{4881:function(u,e,a){"use strict";a.r(e);var r=a(67294),l=r.Fragment,n=function(t){var c=t.children;return r.createElement(l,null,c)};e.default=n}}]);
