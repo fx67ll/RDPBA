@@ -8,12 +8,12 @@
  */
 export default {
   dev: {
-    '/api/': {
+    '/express-api/': {
       // target: 'https://preview.pro.ant.design',
-      // changeOrigin: true,
-      // pathRewrite: { '^': '' },
-      target: 'http://localhost:8001',
+      // target: 'http://localhost:8001',
+      target: 'https://node.fx67ll.com',
       changeOrigin: true,
+      pathRewrite: { '^': '' },
     },
   },
   test: {
