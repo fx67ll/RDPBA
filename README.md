@@ -5,6 +5,7 @@ Reactjs Demo Powered By Antd 欢迎参观 [react.fx67ll.com](https://react.fx67l
 ## 0.1.2.20260210
 
 - 完善登录注册整体逻辑
+- 完善项目整体主题色，文案全部替换为`fx67ll`相关~
 
 ## 0.1.1.20260209
 
