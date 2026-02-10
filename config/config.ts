@@ -1,4 +1,3 @@
-// https://umijs.org/config/
 import { defineConfig } from 'umi';
 import defaultSettings from './defaultSettings';
 import proxy from './proxy';
@@ -28,9 +27,7 @@ export default defineConfig({
   targets: {
     ie: 11,
   },
-  // umi routes: https://umijs.org/docs/routing
   routes,
-  // Theme for antd: https://ant.design/docs/react/customize-theme-cn
   theme: {
     'primary-color': defaultSettings.primaryColor,
   },
@@ -40,7 +37,6 @@ export default defineConfig({
   manifest: {
     basePath: '/',
   },
-  // 快速刷新功能 https://umijs.org/config#fastrefresh
   fastRefresh: {},
   esbuild: {},
   webpack5: {},

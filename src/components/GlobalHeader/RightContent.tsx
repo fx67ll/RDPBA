@@ -33,21 +33,13 @@ const GlobalHeaderRight: React.SFC<GlobalHeaderRightProps> = (props) => {
       <HeaderSearch
         className={`${styles.action} ${styles.search}`}
         placeholder="Site Search"
-        defaultValue="umi ui"
+        defaultValue="fx67ll"
         options={[
           { label: <a href="https://fx67ll.com">fx67ll.com</a>, value: 'fx67ll.com' },
           {
             label: <a href="https://fx67ll.xyz">fx67ll.xyz</a>,
             value: 'fx67ll.xyz',
           },
-          // {
-          //   label: <a href="https://protable.ant.design/">Pro Table</a>,
-          //   value: 'Pro Table',
-          // },
-          // {
-          //   label: <a href="https://prolayout.ant.design/">Pro Layout</a>,
-          //   value: 'Pro Layout',
-          // },
         ]}
         // onSearch={value => {
         //   //console.log('input', value);

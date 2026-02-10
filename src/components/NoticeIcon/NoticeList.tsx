@@ -38,7 +38,7 @@ const NoticeList: React.SFC<NoticeIconTabProps> = ({
     return (
       <div className={styles.notFound}>
         <img
-          src="https://gw.alipayobjects.com/zos/rmsportal/sAuJeJzSKbUmHfBQRzmZ.svg"
+          src="https://test.fx67ll.com/fx67ll-img-collection/fx67ll.jpg"
           alt="not found"
         />
         <div>{emptyText}</div>
