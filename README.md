@@ -1,8 +1,6 @@
 # RDPBA
 
-Reactjs Demo Powered By Antd
-
-欢迎参观 [react.fx67ll.com](https://react.fx67ll.com '基于Antd-Pro的React.js演示项目')
+Reactjs Demo Powered By Antd 欢迎参观 [react.fx67ll.com](https://react.fx67ll.com '基于Antd-Pro的React.js演示项目')
 
 ## 0.1.2.20260210
 
