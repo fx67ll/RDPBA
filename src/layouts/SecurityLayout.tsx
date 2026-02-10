@@ -1,8 +1,9 @@
 import React from 'react';
-import { PageLoading } from '@ant-design/pro-layout';
 import type { ConnectProps } from 'umi';
 import { Redirect, connect } from 'umi';
 import { stringify } from 'querystring';
+import { PageLoading } from '@ant-design/pro-layout';
+import { getCookieJSON } from '@/utils/utils';
 import type { ConnectState } from '@/models/connect';
 import type { CurrentUser } from '@/models/user';
 
@@ -34,13 +35,25 @@ class SecurityLayout extends React.Component<SecurityLayoutProps, SecurityLayout
 
   render() {
     const { isReady } = this.state;
-    const { children, loading, currentUser } = this.props;
+    // const { children, loading, currentUser } = this.props;
+    const { children, loading } = this.props;
     // You can replace it to your authentication rule (such as check token exists)
     // You can replace it with your own login authentication rules (such as judging whether the token exists)
+    const currentUser = getCookieJSON('userInfoFake');
     const isLogin = currentUser && currentUser.userid;
     const queryString = stringify({
       redirect: window.location.href,
     });
+
+    // console.log(
+    //   'auth',
+    //   isReady, // true
+    //   children,
+    //   loading, // false
+    //   currentUser,
+    //   queryString, // redirect=http%3A%2F%2Flocalhost%3A8000%2Fwelcome
+    //   window.location.pathname, // /welcome
+    // );
 
     if ((!isLogin && loading) || !isReady) {
       return <PageLoading />;

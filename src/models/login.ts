@@ -2,12 +2,14 @@ import { stringify } from 'querystring';
 import type { Reducer, Effect } from 'umi';
 import { history } from 'umi';
 import type { SagaIterator } from 'redux-saga';
+import { message } from 'antd';
+import Cookies from 'js-cookie';
 
 // 新增：导入真实登录/注册接口
 import { fakeAccountLogin, login as realLogin, signup as realSignup } from '@/services/login';
 import { setAuthority } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
-import { message } from 'antd';
+import { userInfoFake } from '../../mock/userData';
 
 export type StateType = {
   status?: 'ok' | 'error';
@@ -76,40 +78,49 @@ const Model: LoginModelType = {
     // ===================== 新增：真实登录逻辑（对齐 Mock 登录成功逻辑） =====================
     *realLogin({ payload }, { call, put }): SagaIterator {
       const response = yield call(realLogin, payload);
+
       yield put({
         type: 'changeLoginStatus',
         payload: {
           status: response.status === 0 ? 'ok' : 'error',
-          type: 'realAccount',
-          currentAuthority: response.status === 0 ? 'user' : 'guest',
+          type: 'account',
+          currentAuthority: 'admin', // or user
         },
       });
 
-      // 登录成功逻辑：完全复用 Mock 登录的 redirect 逻辑
-      if (response.status === 0) {
-        const urlParams = new URL(window.location.href);
-        const params = getPageQuery();
-        message.success('🎉 🎉 🎉  登录成功！'); // 对齐 Mock 的提示文案
-        let { redirect } = params as { redirect: string };
-        if (redirect) {
-          const redirectUrlParams = new URL(redirect);
-          if (redirectUrlParams.origin === urlParams.origin) {
-            redirect = redirect.substr(urlParams.origin.length);
-            if (window.routerBase !== '/') {
-              redirect = redirect.replace(window.routerBase, '/');
+      // yield put({
+      //   type: 'user/saveCurrentUser', // 格式：namespace/reducer名称
+      //   payload: userInfoFake, // 传递用户信息给 saveCurrentUser，SecurityLayout中会检查currerntUser对象的信息
+      // });
+      Cookies.set('userInfoFake', JSON.stringify(userInfoFake));
+
+      setTimeout(() => {
+        // 登录成功逻辑：完全复用 Mock 登录的 redirect 逻辑
+        if (response.status === 0) {
+          const urlParams = new URL(window.location.href);
+          const params = getPageQuery();
+          message.success('🎉 🎉 🎉  登录成功！'); // 对齐 Mock 的提示文案
+          let { redirect } = params as { redirect: string };
+          if (redirect) {
+            const redirectUrlParams = new URL(redirect);
+            if (redirectUrlParams.origin === urlParams.origin) {
+              redirect = redirect.substr(urlParams.origin.length);
+              if (window.routerBase !== '/') {
+                redirect = redirect.replace(window.routerBase, '/');
+              }
+              if (redirect.match(/^\/.*#/)) {
+                redirect = redirect.substr(redirect.indexOf('#') + 1);
+              }
+            } else {
+              window.location.href = '/';
+              return;
             }
-            if (redirect.match(/^\/.*#/)) {
-              redirect = redirect.substr(redirect.indexOf('#') + 1);
-            }
-          } else {
-            window.location.href = '/';
-            return;
           }
+          history.replace(redirect || '/');
+        } else {
+          message.error(`登录失败！${response?.msg}`);
         }
-        history.replace(redirect || '/'); // 对齐 Mock：跳 redirect 或首页，而非 /student
-      } else {
-        message.error(`登录失败！${response?.msg}`);
-      }
+      }, 1);
     },
 
     // ===================== 新增：真实注册逻辑 =====================

@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { userInfoFake } from './userData';
 
 const waitTime = (time: number = 100) => {
   return new Promise((resolve) => {
@@ -16,56 +17,7 @@ async function getFakeCaptcha(req: Request, res: Response) {
 // 代码中会兼容本地 service mock 以及部署站点的静态数据
 export default {
   // 支持值为 Object 和 Array
-  'GET /api/currentUser': {
-    name: 'fx67ll',
-    avatar: 'https://test.fx67ll.com/fx67ll-img-collection/fx67ll.jpg',
-    userid: '1023',
-    email: 'fx67ll@qq.com',
-    signature: 'fx67ll.com',
-    title: '全栈交互专家',
-    group: '浩鲸科技',
-    tags: [
-      {
-        key: '0',
-        label: '很有想法的',
-      },
-      {
-        key: '1',
-        label: '专注设计',
-      },
-      {
-        key: '2',
-        label: '呆~',
-      },
-      {
-        key: '3',
-        label: '大长腿',
-      },
-      {
-        key: '4',
-        label: '小马',
-      },
-      {
-        key: '5',
-        label: '海纳百川',
-      },
-    ],
-    notifyCount: 12,
-    unreadCount: 11,
-    country: 'China',
-    geographic: {
-      province: {
-        label: '江苏省',
-        key: '210000',
-      },
-      city: {
-        label: '南京市',
-        key: '210000',
-      },
-    },
-    address: '浩鲸全球总部',
-    phone: '025-268888888',
-  },
+  'GET /api/currentUser': userInfoFake,
   // GET POST 可省略
   'GET /api/users': [
     {
@@ -160,6 +112,5 @@ export default {
       path: '/base/category/list',
     });
   },
-
   'GET  /api/login/captcha': getFakeCaptcha,
 };

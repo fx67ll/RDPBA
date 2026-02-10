@@ -1,6 +1,8 @@
 import type { Effect, Reducer } from 'umi';
-
-import { queryCurrent, query as queryUsers } from '@/services/user';
+import type { SagaIterator } from 'redux-saga';
+// import { queryCurrent, query as queryUsers } from '@/services/user';
+import { query as queryUsers } from '@/services/user';
+import { getCookieJSON } from '@/utils/utils';
 
 export type CurrentUser = {
   avatar?: string;
@@ -41,22 +43,32 @@ const UserModel: UserModelType = {
   },
 
   effects: {
-    *fetch(_, { call, put }) {
+    *fetch(_, { call, put }): SagaIterator {
       const response = yield call(queryUsers);
       yield put({
         type: 'save',
         payload: response,
       });
     },
-    *fetchCurrent(_, { call, put }) {
-      const response = yield call(queryCurrent);
-      yield put({
-        type: 'saveCurrentUser',
-        payload: response,
-      });
+    *fetchCurrent(_, { put }): SagaIterator {
+      // *fetchCurrent(_, { call, put }): SagaIterator {
+      // const response = yield call(queryCurrent);
+      // if (response && response?.userid) {
+      //   yield put({
+      //     type: 'saveCurrentUser',
+      //     payload: response,
+      //   });
+      // }
+
+      const currentUser = getCookieJSON('userInfoFake');
+      if (currentUser && currentUser?.userid) {
+        yield put({
+          type: 'saveCurrentUser',
+          payload: currentUser,
+        });
+      }
     },
   },
-
   reducers: {
     saveCurrentUser(state, action) {
       return {
