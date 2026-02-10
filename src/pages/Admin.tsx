@@ -16,11 +16,10 @@ export default (): React.ReactNode => {
     >
       <Card>
         <Alert
-          // message={intl.formatMessage({
-          //   id: 'pages.welcome.alertMessage',
-          //   defaultMessage: 'Faster and stronger heavy-duty components have been released.',
-          // })}
-          message={'更多精彩演示站点，请访问 `https://fx67ll.com`'}
+          message={intl.formatMessage({
+            id: 'pages.welcome.alertMessage',
+            defaultMessage: '更多精彩演示站点，请访问 `https://fx67ll.com`',
+          })}
           type="success"
           showIcon
           banner
@@ -35,9 +34,9 @@ export default (): React.ReactNode => {
         </Typography.Title>
       </Card>
       <p style={{ textAlign: 'center', marginTop: 24 }}>
-        Want to add more pages? Please refer to{' '}
-        <a href="https://fx67ll.xyz/links" target="_blank" rel="noopener noreferrer">
-          use block
+        Want to contact fx67ll.com? Please visit{' '}
+        <a href="https://fx67ll.xyz/messageboard" target="_blank" rel="noopener noreferrer">
+          messageboard
         </a>
         。
       </p>
