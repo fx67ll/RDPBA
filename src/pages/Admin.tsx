@@ -8,10 +8,11 @@ export default (): React.ReactNode => {
   const intl = useIntl();
   return (
     <PageHeaderWrapper
-      content={intl.formatMessage({
-        id: 'pages.admin.subPage.title',
-        defaultMessage: 'This page can only be viewed by admin',
-      })}
+      // content={intl.formatMessage({
+      //   id: 'pages.admin.subPage.title',
+      //   defaultMessage: 'This page can only be viewed by admin',
+      // })}
+      content=""
     >
       <Card>
         <Alert
@@ -29,7 +30,8 @@ export default (): React.ReactNode => {
           }}
         />
         <Typography.Title level={2} style={{ textAlign: 'center' }}>
-          <SmileTwoTone /> fx67ll.com <HeartTwoTone twoToneColor="#2ECC71" /> You
+          <SmileTwoTone twoToneColor="#2ECC71" /> fx67ll.com <HeartTwoTone twoToneColor="#2ECC71" />{' '}
+          You
         </Typography.Title>
       </Card>
       <p style={{ textAlign: 'center', marginTop: 24 }}>

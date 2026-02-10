@@ -50,7 +50,7 @@ const menuDataRender = (menuList: MenuDataItem[]): MenuDataItem[] =>
 
 const defaultFooterDom = (
   <DefaultFooter
-    copyright={`${new Date().getFullYear()} Produced by Ant Group Experience Technology Department`}
+    copyright={`Designed & Powered by fx67ll 　 Copyright© 2018-${new Date().getFullYear()}`}
     links={[
       {
         key: 'fx67ll.com',
@@ -64,10 +64,16 @@ const defaultFooterDom = (
       //   href: 'https://github.com/ant-design/ant-design-pro',
       //   blankTarget: true,
       // },
+      // {
+      //   key: 'fx67ll.xyz',
+      //   title: 'fx67ll.xyz',
+      //   href: 'https://fx67ll.xyz',
+      //   blankTarget: true,
+      // },
       {
-        key: 'fx67ll.xyz',
-        title: 'fx67ll.xyz',
-        href: 'https://fx67ll.xyz',
+        key: '皖ICP备18017174号',
+        title: '皖ICP备18017174号',
+        href: 'https://beian.miit.gov.cn/',
         blankTarget: true,
       },
     ]}
