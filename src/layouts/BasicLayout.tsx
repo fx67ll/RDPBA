@@ -50,7 +50,7 @@ const menuDataRender = (menuList: MenuDataItem[]): MenuDataItem[] =>
 
 const defaultFooterDom = (
   <DefaultFooter
-    copyright={`Designed & Powered by fx67ll 　 Copyright© 2018-${new Date().getFullYear()}`}
+    copyright={`2018-${new Date().getFullYear()} Designed & Powered by fx67ll`}
     links={[
       {
         key: 'fx67ll.com',

@@ -66,7 +66,26 @@ const UserLayout: React.FC<UserLayoutProps> = (props) => {
           </div>
           {children}
         </div>
-        <DefaultFooter />
+        <DefaultFooter
+          style={{
+            backgroundColor: 'transparent',
+          }}
+          copyright={`2018-${new Date().getFullYear()} Designed & Powered by fx67ll`}
+          links={[
+            {
+              key: 'fx67ll.com',
+              title: 'fx67ll.com',
+              href: 'https://fx67ll.com',
+              blankTarget: true,
+            },
+            {
+              key: '皖ICP备18017174号',
+              title: '皖ICP备18017174号',
+              href: 'https://beian.miit.gov.cn/',
+              blankTarget: true,
+            },
+          ]}
+        />
       </div>
     </HelmetProvider>
   );
