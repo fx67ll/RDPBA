@@ -46,7 +46,7 @@ export async function signup(params: RegisterFormType) {
   // 深拷贝避免修改原参数
   const submitParams = { ...params };
   // 1. 删除确认密码字段（和 Vue 一致，后端不需要）
-  delete submitParams.confimPassWord;
+  delete (submitParams as any).confimPassWord;
   // 2. 密码 MD5 加密（和 Vue 逻辑一致）
   submitParams.passWord = md5(submitParams.passWord);
   // 3. 固定 level 为 16（和 Vue 默认值一致）

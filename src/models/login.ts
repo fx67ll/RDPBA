@@ -1,6 +1,7 @@
 import { stringify } from 'querystring';
 import type { Reducer, Effect } from 'umi';
 import { history } from 'umi';
+import type { SagaIterator } from 'redux-saga';
 
 // 新增：导入真实登录/注册接口
 import { fakeAccountLogin, login as realLogin, signup as realSignup } from '@/services/login';
@@ -11,8 +12,8 @@ import { message } from 'antd';
 export type StateType = {
   status?: 'ok' | 'error';
   type?: string;
+  token?: string;
   currentAuthority?: 'user' | 'guest' | 'admin';
-  // 新增：注册状态
   registerStatus?: 'ok' | 'error';
 };
 
@@ -41,7 +42,7 @@ const Model: LoginModelType = {
 
   effects: {
     // ===================== 原有 Mock 登录逻辑（保留，注释标记） =====================
-    *login({ payload }, { call, put }) {
+    *login({ payload }, { call, put }): SagaIterator {
       const response = yield call(fakeAccountLogin, payload);
       yield put({
         type: 'changeLoginStatus',
@@ -73,7 +74,7 @@ const Model: LoginModelType = {
     },
 
     // ===================== 新增：真实登录逻辑（对齐 Mock 登录成功逻辑） =====================
-    *realLogin({ payload }, { call, put }) {
+    *realLogin({ payload }, { call, put }): SagaIterator {
       const response = yield call(realLogin, payload);
       yield put({
         type: 'changeLoginStatus',
@@ -107,12 +108,12 @@ const Model: LoginModelType = {
         }
         history.replace(redirect || '/'); // 对齐 Mock：跳 redirect 或首页，而非 /student
       } else {
-        message.error('账号或密码错误！');
+        message.error(`登录失败！${response?.msg}`);
       }
     },
 
     // ===================== 新增：真实注册逻辑 =====================
-    *realSignup({ payload }, { call, put }) {
+    *realSignup({ payload }, { call, put }): SagaIterator {
       const response = yield call(realSignup, payload);
       yield put({
         type: 'changeRegisterStatus',
@@ -125,8 +126,10 @@ const Model: LoginModelType = {
       if (response.status === 0) {
         message.success('注册成功！请登录~');
       } else {
-        message.error('注册失败！请检查信息');
+        message.error(`注册失败！${response?.msg}`);
       }
+
+      return response.status === 0;
     },
 
     // 原有登出逻辑（保留）

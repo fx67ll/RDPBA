@@ -1,0 +1,16 @@
+export default {
+  'login.login.alert.msg.not.empty': '账号或密码不能为空！',
+  'login.register.alert.msg.not.empty': '注册信息均不能为空！',
+  'login.login.alert.msg.not.same': '两次输入的密码不一致！',
+  'login.title.login.account.password': '账号密码登录',
+  'login.title.register.account': '注册账号',
+  'login.msg.fail.check.login.info': '登录失败！请检查登录信息~',
+  'login.form.msg.enter.user': '请输入用户名',
+  'login.form.msg.enter.password': '请输入密码',
+  'login.form.msg.enter.check.password': '请确认密码',
+  'login.msg.fail.check.register.info': '注册失败！请检查注册信息~',
+  'login.form.msg.enter.email': '请输入邮箱',
+  'login.form.msg.alert.right.email': '请输入正确的邮箱格式！',
+  'login.form.msg.enter.phone': '请输入手机号',
+  'login.form.msg.alert.right.phone': '请输入正确的手机号格式！',
+};
