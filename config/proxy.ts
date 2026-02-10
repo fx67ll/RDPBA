@@ -10,7 +10,7 @@ export default {
   dev: {
     '/express-api/': {
       // target: 'https://preview.pro.ant.design',
-      // target: 'http://localhost:8001',
+      // target: 'http://localhost:8001', // npm run start 可以走本地mock数据
       target: 'https://node.fx67ll.com',
       changeOrigin: true,
       pathRewrite: { '^': '' },
