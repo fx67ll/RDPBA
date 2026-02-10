@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
+// import React, { useState, useEffect, useCallback } from 'react';
 import Cookies from 'js-cookie';
 import md5 from 'blueimp-md5';
 import type { Dispatch } from 'umi';
@@ -225,7 +226,7 @@ const Login: React.FC<LoginProps> = (props) => {
         ...registerForm,
         passWord: md5(registerForm.passWord),
       };
-      delete submitData.confimPassWord;
+      delete (submitData as any).confimPassWord;
 
       // 4. 调用model的register effect
       await dispatch({
@@ -292,8 +293,8 @@ const Login: React.FC<LoginProps> = (props) => {
       // console.log('result', result);
 
       // 5. 从dispatch返回的结果中获取token
-      if (result && result?.token) {
-        setTokenLocal(result?.token);
+      if (result && (result as any)?.token) {
+        setTokenLocal((result as any)?.token);
         // 直接调用记住密码检查
         // const loginInfo = getCookieJSON('Login-Info');
         if (
@@ -688,8 +689,10 @@ const Login: React.FC<LoginProps> = (props) => {
             <ProFormCheckbox
               noStyle
               name="autoLogin"
-              checked={loginForm.autoLogin}
-              onChange={(e) => setLoginForm((prev) => ({ ...prev, autoLogin: e.target.checked }))}
+              // checked={loginForm.autoLogin}
+              // onChange={(e: any) =>
+              //   setLoginForm((prev) => ({ ...prev, autoLogin: e.target.checked }))
+              // }
             >
               <FormattedMessage id="pages.login.rememberMe" defaultMessage="Auto login" />
             </ProFormCheckbox>
