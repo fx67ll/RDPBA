@@ -1,6 +1,6 @@
 {
   "name": "react.fx67ll.com",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "private": true,
   "description": "An out-of-box UI solution for enterprise applications",
   "scripts": {
@@ -68,10 +68,12 @@
   },
   "devDependencies": {
     "@ant-design/pro-cli": "^1.0.28",
+    "@types/blueimp-md5": "^2.18.2",
     "@types/classnames": "^2.2.7",
     "@types/express": "^4.17.0",
     "@types/history": "^4.7.2",
     "@types/jest": "^26.0.0",
+    "@types/js-cookie": "^3.0.6",
     "@types/lodash": "^4.14.144",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
