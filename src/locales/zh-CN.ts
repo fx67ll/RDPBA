@@ -6,6 +6,7 @@ import pwa from './zh-CN/pwa';
 import component from './zh-CN/component';
 import pages from './zh-CN/pages';
 import login from './zh-CN/login';
+import student from './zh-CN/student';
 
 export default {
   'navBar.lang': '语言',
@@ -23,4 +24,5 @@ export default {
   ...component,
   ...pages,
   ...login,
+  ...student,
 };

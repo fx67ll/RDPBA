@@ -6,6 +6,7 @@ import pwa from './en-US/pwa';
 import component from './en-US/component';
 import pages from './en-US/pages';
 import login from './en-US/login';
+import student from './en-US/student';
 
 export default {
   'navBar.lang': 'Languages',
@@ -23,4 +24,5 @@ export default {
   ...component,
   ...pages,
   ...login,
+  ...student,
 };

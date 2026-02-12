@@ -5,6 +5,7 @@ import { Button, message, DatePicker, Select, Space, Modal, Form, Input } from '
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
+import { useIntl } from 'umi'; // 国际化钩子
 import type { StudentParams } from './data.d';
 import { listStudent, addStudent, updateStudent, delStudent } from './service';
 
@@ -12,6 +13,7 @@ const { RangePicker } = DatePicker;
 const { Option } = Select;
 
 const StudentManagement: React.FC = () => {
+  const intl = useIntl(); // 初始化intl
   const [form] = Form.useForm();
   const actionRef = useRef<ActionType>();
 
@@ -80,13 +82,15 @@ const StudentManagement: React.FC = () => {
       // 设置查询参数并重新加载表格
       actionRef.current?.reloadAndRest?.();
     } else {
-      message.error('请先选择查询日期！');
+      message.error(
+        intl.formatMessage({ id: 'pages.studentManagement.message.searchDateRequired' }),
+      );
     }
   };
 
   // 新增
   const handleAdd = () => {
-    setModalTitle('新增');
+    setModalTitle(intl.formatMessage({ id: 'pages.studentManagement.modal.title.add' }));
     setCurrentRow(undefined);
     form.resetFields();
     setModalVisible(true);
@@ -94,7 +98,7 @@ const StudentManagement: React.FC = () => {
 
   // 编辑
   const handleEdit = (record: StudentParams) => {
-    setModalTitle('编辑');
+    setModalTitle(intl.formatMessage({ id: 'pages.studentManagement.modal.title.edit' }));
     setCurrentRow(record);
     form.setFieldsValue({
       ...record,
@@ -106,19 +110,21 @@ const StudentManagement: React.FC = () => {
   // 删除
   const handleDelete = async (record: StudentParams) => {
     Modal.confirm({
-      title: '删除',
-      content: '删除操作不可逆，确定删除吗?',
-      okText: '确定',
-      cancelText: '取消',
+      title: intl.formatMessage({ id: 'pages.studentManagement.deleteConfirm.title' }),
+      content: intl.formatMessage({ id: 'pages.studentManagement.deleteConfirm.content' }),
+      okText: intl.formatMessage({ id: 'pages.studentManagement.deleteConfirm.okText' }),
+      cancelText: intl.formatMessage({ id: 'pages.studentManagement.deleteConfirm.cancelText' }),
       onOk: async () => {
         try {
           if (record._id) {
             await delStudent(record._id);
-            message.success('删除成功！');
+            message.success(
+              intl.formatMessage({ id: 'pages.studentManagement.message.deleteSuccess' }),
+            );
             actionRef.current?.reload();
           }
         } catch (error) {
-          message.error('删除失败');
+          message.error(intl.formatMessage({ id: 'pages.studentManagement.message.deleteFail' }));
         }
       },
     });
@@ -140,13 +146,15 @@ const StudentManagement: React.FC = () => {
       if (currentRow?._id) {
         const result = await updateStudent(formData as StudentParams);
         if (result) {
-          message.success('更新成功！');
+          message.success(
+            intl.formatMessage({ id: 'pages.studentManagement.message.updateSuccess' }),
+          );
           success = true;
         }
       } else {
         const result = await addStudent(formData as StudentParams);
         if (result) {
-          message.success('新增成功！');
+          message.success(intl.formatMessage({ id: 'pages.studentManagement.message.addSuccess' }));
           success = true;
         }
       }
@@ -156,7 +164,10 @@ const StudentManagement: React.FC = () => {
         actionRef.current?.reload();
       }
     } catch (error) {
-      console.error('表单提交错误:', error);
+      console.error(
+        intl.formatMessage({ id: 'pages.studentManagement.message.submitError' }),
+        error,
+      );
     } finally {
       setLoading(false);
     }
@@ -216,48 +227,50 @@ const StudentManagement: React.FC = () => {
   // 表格列定义
   const columns: ProColumns<StudentParams>[] = [
     {
-      title: '序号',
+      title: intl.formatMessage({ id: 'pages.studentManagement.table.index' }),
       dataIndex: 'index',
       valueType: 'indexBorder',
       width: 80,
     },
     {
-      title: '姓名',
+      title: intl.formatMessage({ id: 'pages.studentManagement.table.name' }),
       dataIndex: 'name',
     },
     {
-      title: '性别',
+      title: intl.formatMessage({ id: 'pages.studentManagement.table.sex' }),
       dataIndex: 'sex',
-      render: (_, record) => (record.sex ? '男' : '女'),
+      render: (_, record) =>
+        record.sex
+          ? intl.formatMessage({ id: 'pages.studentManagement.table.sexMale' })
+          : intl.formatMessage({ id: 'pages.studentManagement.table.sexFemale' }),
     },
     {
-      title: '出生日期',
+      title: intl.formatMessage({ id: 'pages.studentManagement.table.birth' }),
       dataIndex: 'birth',
     },
     {
-      title: '手机号码',
+      title: intl.formatMessage({ id: 'pages.studentManagement.table.phone' }),
       dataIndex: 'phone',
     },
     {
-      title: '备注信息',
+      title: intl.formatMessage({ id: 'pages.studentManagement.table.remark' }),
       dataIndex: 'bro',
     },
     {
-      title: '创建日期',
+      title: intl.formatMessage({ id: 'pages.studentManagement.table.createTime' }),
       dataIndex: 'createTime',
     },
     {
-      title: '操作',
+      title: intl.formatMessage({ id: 'pages.studentManagement.table.operation' }),
       valueType: 'option',
-      width: 160, // 加宽操作列，避免按钮挤压
+      width: 160,
       render: (_, record) => (
-        // 使用Space包裹按钮，统一控制间距
         <Space size="small">
           <Button type="link" size="small" onClick={() => handleEdit(record)}>
-            编辑
+            {intl.formatMessage({ id: 'pages.studentManagement.table.edit' })}
           </Button>
           <Button type="link" danger size="small" onClick={() => handleDelete(record)}>
-            删除
+            {intl.formatMessage({ id: 'pages.studentManagement.table.delete' })}
           </Button>
         </Space>
       ),
@@ -272,21 +285,29 @@ const StudentManagement: React.FC = () => {
           {/* 左侧查询控件 */}
           <Space wrap size="middle">
             <Select
-              placeholder="请选择查询方式"
+              placeholder={intl.formatMessage({ id: 'pages.studentManagement.query.placeholder' })}
               value={dateType}
               onChange={handleDateTypeChange}
-              style={{ width: 120 }}
+              style={{ width: 130 }}
             >
-              <Option value={0}>月查询</Option>
-              <Option value={1}>日查询</Option>
-              <Option value={2}>自定义</Option>
+              <Option value={0}>
+                {intl.formatMessage({ id: 'pages.studentManagement.query.monthQuery' })}
+              </Option>
+              <Option value={1}>
+                {intl.formatMessage({ id: 'pages.studentManagement.query.dayQuery' })}
+              </Option>
+              <Option value={2}>
+                {intl.formatMessage({ id: 'pages.studentManagement.query.customQuery' })}
+              </Option>
             </Select>
 
             {dateType === 0 && (
               <DatePicker
                 picker="month"
                 format="YYYY-MM"
-                placeholder="请选择月份"
+                placeholder={intl.formatMessage({
+                  id: 'pages.studentManagement.query.monthPlaceholder',
+                })}
                 value={month ? moment(month, 'YYYY-MM') : null}
                 onChange={handleMonthChange}
               />
@@ -294,7 +315,9 @@ const StudentManagement: React.FC = () => {
 
             {dateType === 1 && (
               <DatePicker
-                placeholder="请选择日期"
+                placeholder={intl.formatMessage({
+                  id: 'pages.studentManagement.query.datePlaceholder',
+                })}
                 value={date ? moment(date, 'YYYY-MM-DD') : null}
                 onChange={handleDateChange}
               />
@@ -302,7 +325,10 @@ const StudentManagement: React.FC = () => {
 
             {dateType === 2 && (
               <RangePicker
-                placeholder={['开始日期', '结束日期']}
+                placeholder={[
+                  intl.formatMessage({ id: 'pages.studentManagement.query.rangeStartPlaceholder' }),
+                  intl.formatMessage({ id: 'pages.studentManagement.query.rangeEndPlaceholder' }),
+                ]}
                 value={
                   timeRange[0] && timeRange[1]
                     ? [moment(timeRange[0]), moment(timeRange[1])]
@@ -313,21 +339,23 @@ const StudentManagement: React.FC = () => {
             )}
 
             <Button type="primary" onClick={handleSearch} loading={loading}>
-              查询满18周岁的人
+              {intl.formatMessage({ id: 'pages.studentManagement.query.searchButton' })}
             </Button>
 
-            <Button onClick={handleReset}>重置</Button>
+            <Button onClick={handleReset}>
+              {intl.formatMessage({ id: 'pages.studentManagement.query.resetButton' })}
+            </Button>
           </Space>
 
           {/* 右侧新增按钮 */}
           <Button type="primary" onClick={handleAdd}>
-            新增
+            {intl.formatMessage({ id: 'pages.studentManagement.query.addButton' })}
           </Button>
         </div>
       </div>
 
       <ProTable<StudentParams>
-        headerTitle="学员列表"
+        headerTitle={intl.formatMessage({ id: 'pages.studentManagement.table.headerTitle' })}
         actionRef={actionRef}
         rowKey="_id"
         loading={loading}
@@ -349,59 +377,124 @@ const StudentManagement: React.FC = () => {
         onCancel={() => setModalVisible(false)}
         footer={[
           <Button key="cancel" onClick={() => setModalVisible(false)}>
-            取消
+            {intl.formatMessage({ id: 'pages.studentManagement.modal.cancel' })}
           </Button>,
           <Button key="submit" type="primary" loading={loading} onClick={handleSubmit}>
-            确定
+            {intl.formatMessage({ id: 'pages.studentManagement.modal.ok' })}
           </Button>,
         ]}
         width={420}
         destroyOnClose
       >
         <Form form={form} layout="horizontal" labelCol={{ span: 6 }} wrapperCol={{ span: 16 }}>
-          <Form.Item label="姓名" name="name" rules={[{ required: true, message: '请输入姓名！' }]}>
-            <Input placeholder="请输入姓名" />
+          <Form.Item
+            label={intl.formatMessage({ id: 'pages.studentManagement.form.label.name' })}
+            name="name"
+            rules={[
+              {
+                required: true,
+                message: intl.formatMessage({
+                  id: 'pages.studentManagement.form.validation.nameRequired',
+                }),
+              },
+            ]}
+          >
+            <Input
+              placeholder={intl.formatMessage({
+                id: 'pages.studentManagement.form.placeholder.name',
+              })}
+            />
           </Form.Item>
 
-          <Form.Item label="性别" name="sex" rules={[{ required: true, message: '请选择性别！' }]}>
-            <Select placeholder="请选择性别">
-              <Option value={true}>男</Option>
-              <Option value={false}>女</Option>
+          <Form.Item
+            label={intl.formatMessage({ id: 'pages.studentManagement.form.label.sex' })}
+            name="sex"
+            rules={[
+              {
+                required: true,
+                message: intl.formatMessage({
+                  id: 'pages.studentManagement.form.validation.sexRequired',
+                }),
+              },
+            ]}
+          >
+            <Select
+              placeholder={intl.formatMessage({
+                id: 'pages.studentManagement.form.placeholder.sex',
+              })}
+            >
+              <Option value={true}>
+                {intl.formatMessage({ id: 'pages.studentManagement.table.sexMale' })}
+              </Option>
+              <Option value={false}>
+                {intl.formatMessage({ id: 'pages.studentManagement.table.sexFemale' })}
+              </Option>
             </Select>
           </Form.Item>
 
           <Form.Item
-            label="出生日期"
+            label={intl.formatMessage({ id: 'pages.studentManagement.form.label.birth' })}
             name="birth"
-            rules={[{ required: true, message: '请选择出生日期！' }]}
+            rules={[
+              {
+                required: true,
+                message: intl.formatMessage({
+                  id: 'pages.studentManagement.form.validation.birthRequired',
+                }),
+              },
+            ]}
           >
             <DatePicker
               style={{ width: '100%' }}
-              placeholder="请选择出生日期"
+              placeholder={intl.formatMessage({
+                id: 'pages.studentManagement.form.placeholder.birth',
+              })}
               format="YYYY-MM-DD"
             />
           </Form.Item>
 
           <Form.Item
-            label="手机号码"
+            label={intl.formatMessage({ id: 'pages.studentManagement.form.label.phone' })}
             name="phone"
             rules={[
-              { required: true, message: '请输入手机号码！' },
+              {
+                required: true,
+                message: intl.formatMessage({
+                  id: 'pages.studentManagement.form.validation.phoneRequired',
+                }),
+              },
               {
                 pattern: /^1(3\d|4[5-9]|5[0-35-9]|6[567]|7[0-8]|8\d|9[0-35-9])\d{8}$/,
-                message: '手机号码格式错误！',
+                message: intl.formatMessage({
+                  id: 'pages.studentManagement.form.validation.phonePattern',
+                }),
               },
             ]}
           >
-            <Input placeholder="请输入手机号码" />
+            <Input
+              placeholder={intl.formatMessage({
+                id: 'pages.studentManagement.form.placeholder.phone',
+              })}
+            />
           </Form.Item>
 
           <Form.Item
-            label="备注信息"
+            label={intl.formatMessage({ id: 'pages.studentManagement.form.label.remark' })}
             name="bro"
-            rules={[{ required: true, message: '请输入备注信息！' }]}
+            rules={[
+              {
+                required: true,
+                message: intl.formatMessage({
+                  id: 'pages.studentManagement.form.validation.remarkRequired',
+                }),
+              },
+            ]}
           >
-            <Input placeholder="请输入备注信息" />
+            <Input
+              placeholder={intl.formatMessage({
+                id: 'pages.studentManagement.form.placeholder.remark',
+              })}
+            />
           </Form.Item>
         </Form>
       </Modal>
