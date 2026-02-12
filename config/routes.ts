@@ -49,11 +49,17 @@
                   },
                 ],
               },
+              // {
+              //   name: 'list.table-list',
+              //   icon: 'table',
+              //   path: '/list/mock',
+              //   component: './TableList',
+              // },
               {
-                name: 'list.table-list',
+                name: 'list.student-list',
                 icon: 'table',
-                path: '/list',
-                component: './TableList',
+                path: '/list/student',
+                component: './StudentList',
               },
               {
                 component: './404',
