@@ -1,13 +1,13 @@
-import request from '@/utils/request';
+import requestOld from '@/utils/request-mock';
 
 export async function query(): Promise<any> {
-  return request('/api/users');
+  return requestOld('/api/users');
 }
 
 export async function queryCurrent(): Promise<any> {
-  return request('/api/currentUser');
+  return requestOld('/api/currentUser');
 }
 
 export async function queryNotices(): Promise<any> {
-  return request('/api/notices');
+  return requestOld('/api/notices');
 }

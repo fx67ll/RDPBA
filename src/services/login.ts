@@ -1,4 +1,5 @@
 import request from '@/utils/request';
+import requestOld from '@/utils/request-mock';
 import md5 from 'blueimp-md5'; // 新增 MD5 引入
 
 // 原有 Mock 类型定义（保留，注释标记）
@@ -30,14 +31,14 @@ export type RegisterFormType = {
 
 // ===================== 原有 Mock 接口（保留，注释标记） =====================
 export async function fakeAccountLogin(params: FakeLoginParamsType) {
-  return request('/api/login/account', {
+  return requestOld('/api/login/account', {
     method: 'POST',
     data: params,
   });
 }
 
 export async function getFakeCaptcha(mobile: string) {
-  return request(`/api/login/captcha?mobile=${mobile}`);
+  return requestOld(`/api/login/captcha?mobile=${mobile}`);
 }
 
 // ===================== 真实接口（补充加密逻辑） =====================
