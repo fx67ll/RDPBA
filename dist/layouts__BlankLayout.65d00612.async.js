@@ -1,0 +1,1 @@
+(self.webpackChunkRDPBA=self.webpackChunkRDPBA||[]).push([[808],{4881:function(c,e,n){"use strict";n.r(e);var a=n(67294),r=a.Fragment,u=function(t){var l=t.children;return a.createElement(r,null,l)};e.default=u}}]);
