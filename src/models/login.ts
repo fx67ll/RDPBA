@@ -78,6 +78,8 @@ const Model: LoginModelType = {
     // ===================== 新增：真实登录逻辑（对齐 Mock 登录成功逻辑） =====================
     *realLogin({ payload }, { call, put }): SagaIterator {
       const response = yield call(realLogin, payload);
+      const expires = 1; // 1天
+      const path = window.location.href;
 
       yield put({
         type: 'changeLoginStatus',
@@ -93,6 +95,10 @@ const Model: LoginModelType = {
       //   payload: userInfoFake, // 传递用户信息给 saveCurrentUser，SecurityLayout中会检查currerntUser对象的信息
       // });
       Cookies.set('userInfoFake', JSON.stringify(userInfoFake));
+      Cookies.set('User-Token', response.token, {
+        expires: expires,
+        path: path
+      });
 
       setTimeout(() => {
         // 登录成功逻辑：完全复用 Mock 登录的 redirect 逻辑
