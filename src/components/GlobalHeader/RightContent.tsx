@@ -1,6 +1,6 @@
 import { Tooltip, Tag } from 'antd';
 import type { Settings as ProSettings } from '@ant-design/pro-layout';
-import { QuestionCircleOutlined } from '@ant-design/icons';
+import { LinkOutlined, GithubOutlined } from '@ant-design/icons';
 import React from 'react';
 import type { ConnectProps } from 'umi';
 import { connect, SelectLang } from 'umi';
@@ -45,17 +45,30 @@ const GlobalHeaderRight: React.SFC<GlobalHeaderRightProps> = (props) => {
         //   //console.log('input', value);
         // }}
       />
-      <Tooltip title="Use documentation">
+      <Tooltip title="nav.fx67ll.com">
         <a
           style={{
             color: 'inherit',
           }}
           target="_blank"
-          href="https://fx67ll.xyz/s/messageboard"
+          href="https://nav.fx67ll.com"
           rel="noopener noreferrer"
           className={styles.action}
         >
-          <QuestionCircleOutlined />
+          <LinkOutlined />
+        </a>
+      </Tooltip>
+      <Tooltip title="fx67ll's github">
+        <a
+          style={{
+            color: 'inherit',
+          }}
+          target="_blank"
+          href="https://github.com/fx67ll"
+          rel="noopener noreferrer"
+          className={styles.action}
+        >
+          <GithubOutlined />
         </a>
       </Tooltip>
       <Avatar />
