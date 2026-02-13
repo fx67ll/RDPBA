@@ -78,7 +78,7 @@ const Model: LoginModelType = {
     // ===================== 新增：真实登录逻辑（对齐 Mock 登录成功逻辑） =====================
     *realLogin({ payload }, { call, put }): SagaIterator {
       const response = yield call(realLogin, payload);
-      const expires = 1; // 1天
+      const expires = 7; // 天
       const path = window.location.href;
 
       yield put({
