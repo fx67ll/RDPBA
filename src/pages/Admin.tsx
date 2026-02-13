@@ -35,7 +35,7 @@ export default (): React.ReactNode => {
       </Card>
       <p style={{ textAlign: 'center', marginTop: 24 }}>
         Want to contact fx67ll.com? Please visit{' '}
-        <a href="https://fx67ll.xyz/messageboard" target="_blank" rel="noopener noreferrer">
+        <a href="https://fx67ll.xyz/s/messageboard" target="_blank" rel="noopener noreferrer">
           messageboard
         </a>
         。
