@@ -64,6 +64,53 @@
               {
                 component: './404',
               },
+              // {
+              //   path: '/link',
+              //   name: 'link',
+              //   icon: 'link',
+              //   routes: [
+              //     {
+              //       name: '个人站点导航', // 二级菜单名称
+              //       path: 'https://nav.fx67ll.com', // 外链地址（核心配置）
+              //       target: '_blank', // 可选：点击后打开新窗口
+              //     },
+              //     {
+              //       name: '个人日常H5工具',
+              //       path: 'https://life.fx67ll.com',
+              //       target: '_blank',
+              //     },
+              //     {
+              //       name: '个人管理后台',
+              //       path: 'https://vip.fx67ll.com',
+              //       target: '_blank',
+              //     },
+              //     {
+              //       name: 'Node.js 练习作品，使用 Express + MongoDB 构建',
+              //       path: 'https://node.fx67ll.com',
+              //       target: '_blank',
+              //     },
+              //     {
+              //       name: 'Three.js 作品合集',
+              //       path: 'https://three.fx67ll.com',
+              //       target: '_blank',
+              //     },
+              //     {
+              //       name: 'uni-app 作品示例合集',
+              //       path: 'https://uni.fx67ll.com',
+              //       target: '_blank',
+              //     },
+              //     {
+              //       name: 'React.js 练习作品，基于 Ant-Design-Pro + MongoDB 搭建',
+              //       path: 'https://react.fx67ll.com',
+              //       target: '_blank',
+              //     },
+              //     {
+              //       name: '大数据可视化图表地图的示例网站（暂未完成，持续开发中，敬请期待...）',
+              //       path: 'https://map.fx67ll.com',
+              //       target: '_blank',
+              //     },
+              //   ],
+              // },
             ],
           },
           {
