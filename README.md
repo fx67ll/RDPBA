@@ -2,6 +2,10 @@
 Reactjs Demo Powered By Antd 
 欢迎参观 [react.fx67ll.com](https://react.fx67ll.com '基于 Antd-Pro 的 React.js 演示项目')
 
+## 0.1.6.20260818  
+* 新增登录成功后的登录配置弹窗，支持记住账号密码和设置登录过期时间，逻辑对齐`node.fx67ll.com`前端项目  
+* 修复打开友情链接后返回项目页面，误提示登录过期并跳转登录页的问题  
+
 ## 0.1.5.20260725  
 * 统一友情链接优化
 
