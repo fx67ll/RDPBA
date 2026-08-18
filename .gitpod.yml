@@ -1,5 +1,5 @@
 ports:
-  - port: 8000
+  - port: 4445
     onOpen: open-preview
 tasks:
   - init: npm install
