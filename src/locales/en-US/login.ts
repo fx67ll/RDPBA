@@ -14,4 +14,16 @@ export default {
   'login.form.msg.alert.right.email': 'Please enter a valid email format!',
   'login.form.msg.enter.phone': 'Please enter your mobile phone number',
   'login.form.msg.alert.right.phone': 'Please enter a valid mobile phone number format!',
+  'login.config.title': 'Login Configuration',
+  'login.config.remember.me': 'Remember account and password:',
+  'login.config.validity.time': 'Set remember expiry time:',
+  'login.config.validity.placeholder': 'Please select remember expiry time',
+  'login.config.validity.24hour': '24 hours',
+  'login.config.validity.7day': '7 days',
+  'login.config.validity.30day': '30 days',
+  'login.config.validity.180day': '180 days',
+  'login.config.validity.365day': '365 days',
+  'login.config.tips':
+    'Tips: password change is not supported yet, please contact the administrator if needed ~',
+  'login.config.confirm': 'Confirm',
 };

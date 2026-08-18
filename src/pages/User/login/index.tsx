@@ -1,11 +1,14 @@
 import { LockOutlined, MailOutlined, MobileOutlined, UserOutlined } from '@ant-design/icons';
-import { Alert, message, Tabs } from 'antd';
-import React, { useState } from 'react';
+import { Alert, Button, Checkbox, message, Modal, Select, Tabs } from 'antd';
+import React, { useRef, useState } from 'react';
 import ProForm, { ProFormText } from '@ant-design/pro-form';
-import { useIntl, connect } from 'umi';
+import { useIntl, connect, history } from 'umi';
 import type { Dispatch } from 'umi';
+import Cookies from 'js-cookie';
+import md5 from 'blueimp-md5';
 import type { StateType } from '@/models/login';
 import type { ConnectState } from '@/models/connect';
+import { getCookieJSON, getPageQuery } from '@/utils/utils';
 
 import styles from './index.less';
 
@@ -51,6 +54,78 @@ const Login: React.FC<LoginProps> = (props) => {
 
   // 移除 loginForm 和 registerForm 的 useState
 
+  // ===================== 记住密码：从 Cookie 恢复上次登录信息（与 Vue 版逻辑一致） =====================
+  const savedLoginInfoRef = useRef<{ userName?: string; passWord?: string } | null>(null);
+  const [initialLoginValues] = useState(() => {
+    if (Cookies.get('rememberMe') === 'true') {
+      const savedLoginInfo = getCookieJSON('Login-Info');
+      if (savedLoginInfo && savedLoginInfo.userName && savedLoginInfo.passWord) {
+        savedLoginInfoRef.current = savedLoginInfo;
+        return {
+          userName: savedLoginInfo.userName,
+          passWord: savedLoginInfo.passWord,
+          autoLogin: true,
+        };
+      }
+    }
+    return { userName: '', passWord: '', autoLogin: true };
+  });
+
+  // ===================== 登录配置弹窗 =====================
+  const [loginConfigVisible, setLoginConfigVisible] = useState(false);
+  const [isRememberMe, setIsRememberMe] = useState(false);
+  const [validityTime, setValidityTime] = useState<number>(60 * 60 * 24);
+  // 登录成功后的结果，供登录配置弹窗确认时写入 Cookie 使用
+  const loginResultRef = useRef<{ token: string; userName: string; passWord: string } | null>(null);
+
+  // 记住账号密码的选择时间列表
+  const validityTimeOptions = [
+    {
+      value: 60 * 60 * 24,
+      label: intl.formatMessage({ id: 'login.config.validity.24hour', defaultMessage: '24小时' }),
+    },
+    {
+      value: 60 * 60 * 24 * 7,
+      label: intl.formatMessage({ id: 'login.config.validity.7day', defaultMessage: '7天' }),
+    },
+    {
+      value: 60 * 60 * 24 * 30,
+      label: intl.formatMessage({ id: 'login.config.validity.30day', defaultMessage: '30天' }),
+    },
+    {
+      value: 60 * 60 * 24 * 180,
+      label: intl.formatMessage({ id: 'login.config.validity.180day', defaultMessage: '180天' }),
+    },
+    {
+      value: 60 * 60 * 24 * 365,
+      label: intl.formatMessage({ id: 'login.config.validity.365day', defaultMessage: '365天' }),
+    },
+  ];
+
+  // ===================== 登录成功后的提示与跳转（与原 Model 中的逻辑一致） =====================
+  const finishLogin = () => {
+    message.success('🎉 🎉 🎉  登录成功！');
+    const urlParams = new URL(window.location.href);
+    const params = getPageQuery();
+    let { redirect } = params as { redirect: string };
+    if (redirect) {
+      const redirectUrlParams = new URL(redirect);
+      if (redirectUrlParams.origin === urlParams.origin) {
+        redirect = redirect.substr(urlParams.origin.length);
+        if (window.routerBase !== '/') {
+          redirect = redirect.replace(window.routerBase, '/');
+        }
+        if (redirect.match(/^\/.*#/)) {
+          redirect = redirect.substr(redirect.indexOf('#') + 1);
+        }
+      } else {
+        window.location.href = '/';
+        return;
+      }
+    }
+    history.replace(redirect || '/');
+  };
+
   // ===================== 真实登录提交 =====================
   const handleRealLogin = async (values: any) => {
     const { dispatch } = props;
@@ -64,16 +139,75 @@ const Login: React.FC<LoginProps> = (props) => {
       );
       return;
     }
-    // 2. 调用真实登录
-    dispatch({
-      type: 'login/realLogin',
-      payload: {
-        ...values,
-        validityTime: 60 * 60 * 24,
-        autoLogin: true,
-        isFromCookie: false,
-      },
-    });
+
+    // 2. 与 Vue 版逻辑一致：使用 Cookie 中保存的密文登录时不再重复 MD5 加密
+    const savedLoginInfo = savedLoginInfoRef.current;
+    const isFromCookie = !!(
+      savedLoginInfo &&
+      values.userName === savedLoginInfo.userName &&
+      values.passWord === savedLoginInfo.passWord
+    );
+
+    // 3. 调用真实登录
+    let response: any;
+    try {
+      response = await dispatch({
+        type: 'login/realLogin',
+        payload: {
+          ...values,
+          validityTime: 60 * 60 * 24,
+          autoLogin: true,
+          isFromCookie,
+        },
+      });
+    } catch (error: any) {
+      message.error(`登录失败！${error?.message || ''}`);
+      return;
+    }
+    if (!response || response.status !== 0) {
+      message.error(`登录失败！${response?.msg || ''}`);
+      return;
+    }
+
+    // 4. 保存登录结果，passWord 统一记录为 MD5 密文，供登录配置弹窗使用
+    loginResultRef.current = {
+      token: response.token,
+      userName: values.userName,
+      passWord: isFromCookie ? values.passWord : md5(values.passWord),
+    };
+
+    // 5. 与 Vue 版逻辑一致：未配置过记住密码或更换登录账号时，弹出登录配置弹窗
+    const currentLoginInfo = getCookieJSON('Login-Info');
+    const needLoginConfig =
+      Cookies.get('rememberMe') !== 'true' ||
+      !currentLoginInfo ||
+      currentLoginInfo.userName !== values.userName;
+
+    if (needLoginConfig) {
+      setIsRememberMe(false);
+      setValidityTime(60 * 60 * 24);
+      setLoginConfigVisible(true);
+    } else {
+      finishLogin();
+    }
+  };
+
+  // ===================== 登录配置弹窗确认 =====================
+  const handleConfirmLoginConfig = () => {
+    const loginResult = loginResultRef.current;
+    if (loginResult) {
+      const { dispatch } = props;
+      dispatch({
+        type: 'login/setLoginConfig',
+        payload: {
+          ...loginResult,
+          validityTime,
+          isRememberMe,
+        },
+      });
+    }
+    setLoginConfigVisible(false);
+    finishLogin();
   };
 
   // ===================== 注册提交 =====================
@@ -142,11 +276,7 @@ const Login: React.FC<LoginProps> = (props) => {
       {/* 登录表单 */}
       {type === 'realAccount' && (
         <ProForm
-          initialValues={{
-            userName: '',
-            passWord: '',
-            autoLogin: true,
-          }}
+          initialValues={initialLoginValues}
           submitter={{
             render: (_, dom) => dom.pop(),
             submitButtonProps: {
@@ -358,6 +488,71 @@ const Login: React.FC<LoginProps> = (props) => {
           />
         </ProForm>
       )}
+
+      {/* ===================== 登录配置弹窗（与 Vue 版登录配置对话框逻辑一致） ===================== */}
+      <Modal
+        title={intl.formatMessage({
+          id: 'login.config.title',
+          defaultMessage: '登录配置',
+        })}
+        visible={loginConfigVisible}
+        width={390}
+        style={{ top: 200 }}
+        closable={false}
+        keyboard={false}
+        maskClosable={false}
+        footer={[
+          <Button type="primary" key="loginConfigConfirm" onClick={handleConfirmLoginConfig}>
+            {intl.formatMessage({
+              id: 'login.config.confirm',
+              defaultMessage: '确 定',
+            })}
+          </Button>,
+        ]}
+      >
+        <div className={styles.tipBox}>
+          <div className={styles.tipItem}>
+            {intl.formatMessage({
+              id: 'login.config.remember.me',
+              defaultMessage: '是否记住账号密码：',
+            })}
+          </div>
+          <div className={styles.tipItem}>
+            <Checkbox checked={isRememberMe} onChange={(e) => setIsRememberMe(e.target.checked)} />
+          </div>
+        </div>
+        <div className={styles.tipBox}>
+          <div className={styles.tipItem}>
+            {intl.formatMessage({
+              id: 'login.config.validity.time',
+              defaultMessage: '设置记住过期时间：',
+            })}
+          </div>
+          <div className={styles.tipItem}>
+            <Select
+              style={{ width: '100%' }}
+              value={validityTime}
+              placeholder={intl.formatMessage({
+                id: 'login.config.validity.placeholder',
+                defaultMessage: '请选择记住过期时间',
+              })}
+              onChange={(value: number) => setValidityTime(value)}
+            >
+              {validityTimeOptions.map((item) => (
+                <Select.Option key={item.value} value={item.value}>
+                  {item.label}
+                </Select.Option>
+              ))}
+            </Select>
+          </div>
+        </div>
+        <div className={styles.tipBox}>
+          {intl.formatMessage({
+            id: 'login.config.tips',
+            defaultMessage: 'Tips：暂不提供修改密码，如有需要请联系管理员 ~',
+          })}
+        </div>
+      </Modal>
     </div>
   );
 };

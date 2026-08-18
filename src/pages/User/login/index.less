@@ -42,3 +42,27 @@
     font-size: @font-size-base;
   }
 }
+
+// 登录配置弹窗内容（Modal 渲染在 body 的 Portal 中，需放在顶层作用域）
+.tipBox {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 20px;
+
+  .tipItem {
+    min-width: 150px;
+    font-size: 16px;
+    line-height: 40px;
+
+    // 控件列占满剩余宽度
+    &:last-child {
+      flex: 1;
+      min-width: 0;
+    }
+  }
+}
+
+.tipBox:last-child {
+  margin-bottom: 0;
+  padding-top: 10px;
+}
