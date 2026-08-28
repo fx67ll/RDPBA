@@ -1,6 +1,6 @@
 {
   "/umi.css": "/umi.18f3ad42.css",
-  "/umi.js": "/umi.0d206348.js",
+  "/umi.js": "/umi.4c00ea71.js",
   "/layouts__BlankLayout.js": "/layouts__BlankLayout.65d00612.async.js",
   "/layouts__UserLayout.css": "/layouts__UserLayout.8cf929b6.chunk.css",
   "/layouts__UserLayout.js": "/layouts__UserLayout.f25a821c.async.js",
@@ -8,7 +8,7 @@
   "/p__User__login.js": "/p__User__login.0ee17276.async.js",
   "/layouts__SecurityLayout.js": "/layouts__SecurityLayout.14102f36.async.js",
   "/layouts__BasicLayout.css": "/layouts__BasicLayout.4af61b1f.chunk.css",
-  "/layouts__BasicLayout.js": "/layouts__BasicLayout.a517cf75.async.js",
+  "/layouts__BasicLayout.js": "/layouts__BasicLayout.600353db.async.js",
   "/p__Welcome.css": "/p__Welcome.204b47ac.chunk.css",
   "/p__Welcome.js": "/p__Welcome.26126912.async.js",
   "/p__Admin.css": "/p__Admin.e4835465.chunk.css",
@@ -33,6 +33,6 @@
   "/624.c2c2d2e3.chunk.css": "/624.c2c2d2e3.chunk.css",
   "/624.e741912f.async.js": "/624.e741912f.async.js",
   "/917.c49477dd.async.js": "/917.c49477dd.async.js",
-  "/static/tokyo.jpg": "/static/tokyo.4958085d.jpg",
+  "/static/tokyo.4958085d.jpg": "/static/tokyo.4958085d.jpg",
   "/public/favicon.ico": "/favicon.ico"
 }
