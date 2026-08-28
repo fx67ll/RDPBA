@@ -45,13 +45,13 @@ const GlobalHeaderRight: React.SFC<GlobalHeaderRightProps> = (props) => {
         //   //console.log('input', value);
         // }}
       />
-      <Tooltip title="nav.fx67ll.com">
+      <Tooltip title="resume.fx67ll.com">
         <a
           style={{
             color: 'inherit',
           }}
           target="_blank"
-          href="https://nav.fx67ll.com"
+          href="https://resume.fx67ll.com"
           rel="noopener noreferrer"
           className={styles.action}
         >
