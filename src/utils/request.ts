@@ -139,7 +139,12 @@ request.interceptors.response.use(async (response: Response) => {
     });
     Cookies.remove('User-Token');
     Cookies.remove('userInfoFake');
-    setTimeout(() => window.location.reload(), 1023);
+    // 已在登录页时无需刷新（避免打断刚渲染的登录表单），其余场景刷新后由 SecurityLayout 跳转登录页
+    setTimeout(() => {
+      if (window.location.pathname !== '/user/login') {
+        window.location.reload();
+      }
+    }, 1023);
     return data;
   }
 

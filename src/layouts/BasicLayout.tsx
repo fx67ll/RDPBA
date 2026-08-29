@@ -4,7 +4,7 @@ import type {
   Settings,
 } from '@ant-design/pro-layout';
 import ProLayout, { DefaultFooter } from '@ant-design/pro-layout';
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useMemo, useRef } from 'react';
 import type { Dispatch } from 'umi';
 import { Link, useIntl, connect, history } from 'umi';
 import { GithubOutlined } from '@ant-design/icons';
@@ -92,13 +92,8 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
 
   const menuDataRef = useRef<MenuDataItem[]>([]);
 
-  useEffect(() => {
-    if (dispatch) {
-      dispatch({
-        type: 'user/fetchCurrent',
-      });
-    }
-  }, []);
+  // 注意：登录态获取与校验统一由外层 SecurityLayout 派发，此处不再重复派发，
+  // 避免 loading 二次置位导致页面「渲染后弹回加载页」的闪烁
   /** Init variables */
 
   const handleMenuCollapse = (payload: boolean): void => {

@@ -74,3 +74,16 @@ export async function login(params: LoginParamsType) {
     data: submitParams,
   });
 }
+
+// 校验登录态是否有效（携带 User-Token 请求受保护接口，token 失效时后端返回 401）
+export async function checkToken() {
+  return request('/express-api/student/getStudentList', {
+    method: 'GET',
+    params: {
+      pageIndex: 1,
+      pageSize: 1,
+      startTime: '',
+      endTime: '',
+    },
+  });
+}

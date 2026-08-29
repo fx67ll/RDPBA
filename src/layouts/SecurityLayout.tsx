@@ -55,7 +55,8 @@ class SecurityLayout extends React.Component<SecurityLayoutProps, SecurityLayout
     //   window.location.pathname, // /welcome
     // );
 
-    if ((!isLogin && loading) || !isReady) {
+    // 登录态服务端校验期间（loading）保持加载页，避免会话已过期时先闪现业务页面再跳登录页
+    if (loading || !isReady) {
       return <PageLoading />;
     }
     if (!isLogin && window.location.pathname !== '/user/login') {

@@ -98,7 +98,11 @@ const Model: LoginModelType = {
       if (response.status === 0) {
         // js-cookie 的 expires 单位为「天」，validityTime 单位为「秒」，换算与 Vue 版保持一致
         const expires = (payload.validityTime || 60 * 60 * 24) / (60 * 60 * 24);
-        Cookies.set('userInfoFake', JSON.stringify(userInfoFake));
+        // 登录态 Cookie 必须与 token 设置相同的有效期，否则登录状态永不过期
+        Cookies.set('userInfoFake', JSON.stringify(userInfoFake), {
+          expires,
+          path: '/',
+        });
         Cookies.set('User-Token', response.token, {
           expires,
           // path 必须是 URL 路径（如 '/'），不能是完整地址，
@@ -117,7 +121,11 @@ const Model: LoginModelType = {
       const expires = (validityTime || 60 * 60 * 24) / (60 * 60 * 24);
 
       if (isRememberMe) {
-        // 按选择的有效期重新设置 token，并记录账号密码信息
+        // 按选择的有效期重新设置登录态 Cookie 与 token，并记录账号密码信息
+        Cookies.set('userInfoFake', JSON.stringify(userInfoFake), {
+          expires,
+          path: '/',
+        });
         Cookies.set('User-Token', token, {
           expires,
           path: '/',
